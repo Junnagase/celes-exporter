@@ -1,0 +1,49 @@
+name: Celes 月次注文PDF取得・Drive保存
+
+on:
+  schedule:
+    # 毎月1日 09:00 JST (= 00:00 UTC) に自動実行
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+    # 手動実行・テスト用（GitHub Actions の「Run workflow」ボタンから起動可能）
+    inputs:
+      target_month:
+        description: '対象月 (例: 2024-05)。空欄なら前月'
+        required: false
+        default: ''
+      force:
+        description: 'アップロード済みでも強制再実行 (1 で有効)'
+        required: false
+        default: ''
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright (Chromium + system deps)
+        run: npx playwright install chromium --with-deps
+
+      - name: Run export & upload
+        env:
+          CELES_USER: ${{ secrets.CELES_USER }}
+          CELES_PASS: ${{ secrets.CELES_PASS }}
+          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+          DRIVE_PARENT_FOLDER_ID: ${{ secrets.DRIVE_PARENT_FOLDER_ID }}
+          TARGET_MONTH: ${{ github.event.inputs.target_month }}
+          FORCE: ${{ github.event.inputs.force }}
+          HEADLESS: 'true'
+        run: npm start

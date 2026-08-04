@@ -1,0 +1,17 @@
+{
+  "name": "celes-order-pdf",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Celes(セレス)の注文履歴から前月分を取得し、PDF化してGoogle Driveへ格納する",
+  "scripts": {
+    "start": "node src/index.js",
+    "debug-login": "HEADLESS=false node src/index.js",
+    "install-schedule": "./scripts/install.sh"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "googleapis": "^174.0.0",
+    "playwright": "^1.47.0"
+  }
+}
