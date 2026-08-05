@@ -41,7 +41,9 @@ jobs:
         env:
           CELES_USER: ${{ secrets.CELES_USER }}
           CELES_PASS: ${{ secrets.CELES_PASS }}
-          GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
           DRIVE_PARENT_FOLDER_ID: ${{ secrets.DRIVE_PARENT_FOLDER_ID }}
           TARGET_MONTH: ${{ github.event.inputs.target_month }}
           FORCE: ${{ github.event.inputs.force }}

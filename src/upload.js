@@ -6,13 +6,23 @@ const PARENT_FOLDER_ID =
   process.env.DRIVE_PARENT_FOLDER_ID || '1TmAbKao56y7skunoa_-DoPLjYhz35sTp';
 
 function buildAuth() {
-  const keyJson = process.env.GOOGLE_SA_KEY;
-  if (!keyJson) throw new Error('GOOGLE_SA_KEY が設定されていません');
-  const credentials = JSON.parse(keyJson);
-  return new google.auth.GoogleAuth({
-    credentials,
-    scopes: ['https://www.googleapis.com/auth/drive'],
-  });
+  // OAuth2リフレッシュトークン方式（個人のMyDriveへのアップロードはこちら）
+  if (process.env.GOOGLE_REFRESH_TOKEN) {
+    const oauth2 = new google.auth.OAuth2(
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET
+    );
+    oauth2.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+    return oauth2;
+  }
+  // サービスアカウント方式（Shared Driveのみ対応）
+  if (process.env.GOOGLE_SA_KEY) {
+    return new google.auth.GoogleAuth({
+      credentials: JSON.parse(process.env.GOOGLE_SA_KEY),
+      scopes: ['https://www.googleapis.com/auth/drive'],
+    });
+  }
+  throw new Error('GOOGLE_REFRESH_TOKEN または GOOGLE_SA_KEY が設定されていません');
 }
 
 async function findOrCreateFolder(drive, name, parentId) {
