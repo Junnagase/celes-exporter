@@ -45,7 +45,7 @@ jobs:
           GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_REFRESH_TOKEN: ${{ secrets.GOOGLE_REFRESH_TOKEN }}
           DRIVE_PARENT_FOLDER_ID: ${{ secrets.DRIVE_PARENT_FOLDER_ID }}
-          TARGET_MONTH: ${{ github.event.inputs.target_month }}
+          TARGET_MONTH: ${{ github.event.inputs.target_month || '2024-05' }}
           FORCE: ${{ github.event.inputs.force }}
           HEADLESS: 'true'
         run: npm start
