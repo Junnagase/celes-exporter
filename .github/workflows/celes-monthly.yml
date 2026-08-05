@@ -2,8 +2,8 @@ name: Celes 月次注文PDF取得・Drive保存
 
 on:
   schedule:
-    # 毎月1日 09:00 JST (= 00:00 UTC) に自動実行
-    - cron: '0 0 1 * *'
+    # テスト用: 毎日 10:00 JST (= 01:00 UTC) に自動実行
+    - cron: '0 1 * * *'
   workflow_dispatch:
     # 手動実行・テスト用（GitHub Actions の「Run workflow」ボタンから起動可能）
     inputs:
