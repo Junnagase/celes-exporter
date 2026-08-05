@@ -104,8 +104,8 @@ async function main() {
     console.log(`MONTH=${label}`);
     console.log(`FILE_COUNT=${created.length}`);
 
-    // GOOGLE_SA_KEY が設定されていれば自動でDriveにアップロード（クラウド実行時）
-    if (process.env.GOOGLE_SA_KEY) {
+    // 認証情報が設定されていれば自動でDriveにアップロード（クラウド実行時）
+    if (process.env.GOOGLE_REFRESH_TOKEN || process.env.GOOGLE_SA_KEY) {
       console.log('Drive へアップロード中...');
       await uploadPdfs(path.resolve(dir), label);
       console.log('STATUS=uploaded');
